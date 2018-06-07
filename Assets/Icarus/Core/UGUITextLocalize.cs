@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Icarus.Core
 {
     [RequireComponent(typeof(Text))]
-    public class TextLocalize : MonoBehaviour
+    public class UGUITextLocalize : MonoBehaviour
     {
         [SerializeField] private string _key;
 
