@@ -24,7 +24,7 @@ namespace Icarus.Core
         private static ReadOnlyDictionary<string, string> GetLocalizedText(string language, string text)
         {
             var dic = new Dictionary<string, string>();
-            var keyValueLine = text.Split('\n');
+            var keyValueLine = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
             int languageIndex = 0;
 
