@@ -50,6 +50,13 @@ namespace Icarus.Core
                 }
 
                 var keyValue = keyValueLine[rawTextLine].Split(',');
+
+                // keyValue.Length が 1 以下だと、正しく設定されていないもしくは空白行部分なので避ける
+                if (keyValue.Length <= 1)
+                {
+                    continue;
+                }
+
                 dic.Add(keyValue[0], keyValue[languageIndex]);
             }
 
