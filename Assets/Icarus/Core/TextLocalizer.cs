@@ -6,7 +6,9 @@ namespace Icarus.Core
 {
     public static class TextLocalizer
     {
-        public static ReadOnlyDictionary<string, string> LocalizedText { get; private set; }
+        private static ReadOnlyDictionary<string, string> _localizedText;
+
+        public static string GetText(string key) => _localizedText[key];
 
         /// <summary>
         /// Initialize
@@ -18,13 +20,13 @@ namespace Icarus.Core
 
             rawText = targetRawText == "" ? FileLoader.Load().text : targetRawText;
 
-            LocalizedText = GetLocalizedText(language, rawText);
+            _localizedText = GetLocalizedText(language, rawText);
         }
 
         private static ReadOnlyDictionary<string, string> GetLocalizedText(string language, string text)
         {
             var dic = new Dictionary<string, string>();
-            var keyValueLine = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var keyValueLine = text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
             int languageIndex = 0;
 
