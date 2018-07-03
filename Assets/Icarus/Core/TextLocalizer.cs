@@ -59,7 +59,9 @@ namespace Icarus.Core
                     continue;
                 }
 
-                dic.Add(keyValue[0], keyValue[languageIndex]);
+                var content = keyValue[languageIndex].Replace("\\n", Environment.NewLine);
+
+                dic.Add(keyValue[0], content);
             }
 
             return new ReadOnlyDictionary<string, string>(dic);
