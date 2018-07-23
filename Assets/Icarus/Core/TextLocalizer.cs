@@ -1,12 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Icarus.Core
 {
     public static class TextLocalizer
     {
-        public static ReadOnlyDictionary<string, string> LocalizedText { get; private set; }
+        private static ReadOnlyDictionary<string, string> _localizedText;
+
+        public static string GetText(string key) => _localizedText[key];
+
+        public static string GetText(string key, params object[] args)
+        {
+            string value = string.Empty;
+            try
+            {
+                value = string.Format(_localizedText[key], args);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError(e);
+                string debugOutput = string.Empty;
+
+                foreach (var arg in args)
+                {
+                    debugOutput += arg + ",";
+                }
+
+                var substring = debugOutput.Substring(0, debugOutput.Length - 1);
+                UnityEngine.Debug.LogError("LocalizeText の引数と GetText の引数の数が一致していないです。引数の数を一致させてください。");
+                UnityEngine.Debug.LogError(_localizedText[key]);
+                UnityEngine.Debug.LogError(substring);
+                throw;
+            }
+
+            return value;
+        }
 
         /// <summary>
         /// Initialize
@@ -18,13 +48,13 @@ namespace Icarus.Core
 
             rawText = targetRawText == "" ? FileLoader.Load().text : targetRawText;
 
-            LocalizedText = GetLocalizedText(language, rawText);
+            _localizedText = GetLocalizedText(language, rawText);
         }
 
         private static ReadOnlyDictionary<string, string> GetLocalizedText(string language, string text)
         {
             var dic = new Dictionary<string, string>();
-            var keyValueLine = text.Split('\n');
+            var keyValueLine = text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
             int languageIndex = 0;
 
@@ -50,7 +80,16 @@ namespace Icarus.Core
                 }
 
                 var keyValue = keyValueLine[rawTextLine].Split(',');
-                dic.Add(keyValue[0], keyValue[languageIndex]);
+
+                // keyValue.Length が 1 以下だと、正しく設定されていないもしくは空白行部分なので避ける
+                if (keyValue.Length <= 1)
+                {
+                    continue;
+                }
+
+                var content = keyValue[languageIndex].Replace("\\n", Environment.NewLine);
+
+                dic.Add(keyValue[0], content);
             }
 
             return new ReadOnlyDictionary<string, string>(dic);
