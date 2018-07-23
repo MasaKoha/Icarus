@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Icarus.Core
 {
@@ -9,6 +10,33 @@ namespace Icarus.Core
         private static ReadOnlyDictionary<string, string> _localizedText;
 
         public static string GetText(string key) => _localizedText[key];
+
+        public static string GetText(string key, params object[] args)
+        {
+            string value = string.Empty;
+            try
+            {
+                value = string.Format(_localizedText[key], args);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError(e);
+                string debugOutput = string.Empty;
+
+                foreach (var arg in args)
+                {
+                    debugOutput += arg + ",";
+                }
+
+                var substring = debugOutput.Substring(0, debugOutput.Length - 1);
+                UnityEngine.Debug.LogError("LocalizeText の引数と GetText の引数の数が一致していないです。引数の数を一致させてください。");
+                UnityEngine.Debug.LogError(_localizedText[key]);
+                UnityEngine.Debug.LogError(substring);
+                throw;
+            }
+
+            return value;
+        }
 
         /// <summary>
         /// Initialize
