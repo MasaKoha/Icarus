@@ -9,7 +9,27 @@ namespace Icarus.Core
     {
         private static ReadOnlyDictionary<string, string> _localizedText;
 
-        public static string GetText(string key) => _localizedText[key];
+        public static string GetText(LocalizationEnum enumKey)
+        {
+            var key = enumKey.ToString();
+            return GetText(key);
+        }
+
+        public static string GetText(string key)
+        {
+            string text;
+            if (!_localizedText.TryGetValue(key, out text))
+            {
+                throw new KeyNotFoundException("存在しないkeyです key: " + key);
+            }
+            return text;
+        }
+
+        public static string GetText(LocalizationEnum enumKey, params object[] args)
+        {
+            var key = enumKey.ToString();
+            return GetText(key, args);
+        }
 
         public static string GetText(string key, params object[] args)
         {
@@ -54,7 +74,7 @@ namespace Icarus.Core
         private static ReadOnlyDictionary<string, string> GetLocalizedText(string language, string text)
         {
             var dic = new Dictionary<string, string>();
-            var keyValueLine = text.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            var keyValueLine = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
             int languageIndex = 0;
 

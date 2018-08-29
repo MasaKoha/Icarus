@@ -1,5 +1,6 @@
 ﻿using Icarus.Core;
 using NUnit.Framework;
+using System;
 
 namespace Icarus.Editor.Test
 {
@@ -14,17 +15,24 @@ namespace Icarus.Editor.Test
         [Test]
         public void ConvertTextToDic()
         {
-            TextLocalizer.Initialize("ja", "key,ja,en\nKeyTest,テスト,Test\n");
+            TextLocalizer.Initialize("ja", $"key,ja,en{Environment.NewLine}KeyTest,テスト,Test{Environment.NewLine}");
             Assert.AreEqual(TextLocalizer.GetText("KeyTest"), "テスト");
 
-            TextLocalizer.Initialize("en", "key,ja,en\nKeyTest,テスト,Test\n");
+            TextLocalizer.Initialize("en", $"key,ja,en{Environment.NewLine}KeyTest,テスト,Test{Environment.NewLine}");
             Assert.AreEqual(TextLocalizer.GetText("KeyTest"), "Test");
+        }
+
+        [Test]
+        public void LocalizationEnumKey()
+        {
+            TextLocalizer.Initialize("ja", $"key,ja,en{Environment.NewLine}KeyTest,テスト,Test{Environment.NewLine}");
+            Assert.AreEqual(TextLocalizer.GetText(LocalizationEnum.KeyTest), "テスト");
         }
 
         [Test]
         public void GetTextWithArgsTest()
         {
-            TextLocalizer.Initialize("ja", "key,ja\nKeyTest,テスト{0}{1}{2}\n");
+            TextLocalizer.Initialize("ja", $"key,ja{Environment.NewLine}KeyTest,テスト{{0}}{{1}}{{2}}{Environment.NewLine}");
             Assert.AreEqual(TextLocalizer.GetText("KeyTest", "引数", "の", "Test"), "テスト引数のTest");
         }
     }
