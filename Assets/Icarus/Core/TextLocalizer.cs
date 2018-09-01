@@ -20,7 +20,7 @@ namespace Icarus.Core
             string text;
             if (!_localizedText.TryGetValue(key, out text))
             {
-                throw new KeyNotFoundException("存在しないkeyです key: " + key);
+                throw new KeyNotFoundException("not found key: " + key);
             }
             return text;
         }
