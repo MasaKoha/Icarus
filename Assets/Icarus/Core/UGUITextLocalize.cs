@@ -6,7 +6,7 @@ namespace Icarus.Core
     [RequireComponent(typeof(Text))]
     public class UGUITextLocalize : MonoBehaviour
     {
-        [SerializeField] private string _key;
+        [SerializeField] private LocalizationEnum _key;
 
         private void Start()
         {
