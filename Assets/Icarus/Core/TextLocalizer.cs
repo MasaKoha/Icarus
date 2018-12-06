@@ -5,15 +5,9 @@ using System.Diagnostics;
 
 namespace Icarus.Core
 {
-    public static class TextLocalizer
+    public static partial class TextLocalizer
     {
         private static ReadOnlyDictionary<string, string> _localizedText;
-
-        public static string GetText(LocalizationEnum enumKey)
-        {
-            var key = enumKey.ToString();
-            return GetText(key);
-        }
 
         public static string GetText(string key)
         {
@@ -23,12 +17,6 @@ namespace Icarus.Core
                 throw new KeyNotFoundException("not found key: " + key);
             }
             return text;
-        }
-
-        public static string GetText(LocalizationEnum enumKey, params object[] args)
-        {
-            var key = enumKey.ToString();
-            return GetText(key, args);
         }
 
         public static string GetText(string key, params object[] args)
@@ -66,7 +54,7 @@ namespace Icarus.Core
         {
             string rawText = "";
 
-            rawText = targetRawText == "" ? FileLoader.Load().text : targetRawText;
+            rawText = targetRawText == "" ? FileLoader.LoadDefaultFile().text : targetRawText;
 
             _localizedText = GetLocalizedText(language, rawText);
         }
@@ -108,7 +96,6 @@ namespace Icarus.Core
                 }
 
                 var content = keyValue[languageIndex].Replace("\\n", Environment.NewLine);
-
                 dic.Add(keyValue[0], content);
             }
 
