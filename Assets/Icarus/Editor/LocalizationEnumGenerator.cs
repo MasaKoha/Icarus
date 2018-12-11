@@ -17,7 +17,7 @@ namespace Icarus.Editor
 
         private const string UGUITextLocalizeFileName = "UGUITextLocalize";
 
-        [MenuItem("Tools/LocalizationEnumGenerate")]
+        [MenuItem("Window/Icarus/LocalizationEnumGenerate")]
         public static void Generate()
         {
             var text = FileLoader.LoadDefaultFile().text;

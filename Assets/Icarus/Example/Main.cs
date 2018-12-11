@@ -7,7 +7,7 @@ namespace Icarus.Example
     {
         private void Awake()
         {
-            TextLocalizer.Initialize();
+            TextLocalizer.Initialize("ja", "ja");
         }
     }
 }

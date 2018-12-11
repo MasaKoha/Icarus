@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace Icarus.Core
 {
@@ -9,12 +8,23 @@ namespace Icarus.Core
     {
         private static ReadOnlyDictionary<string, string> _localizedText;
 
+        public static void Initialize(string defaultLanguage, string targetLanguage)
+        {
+            _localizedText = GetLocalizedText(defaultLanguage, targetLanguage, FileLoader.LoadDefaultFile().text);
+        }
+
+        public static void Initialize(string defaultLanguage, string targetLanguage, string targetRawText)
+        {
+            _localizedText = GetLocalizedText(defaultLanguage, targetLanguage, targetRawText);
+        }
+
         public static string GetText(string key)
         {
             string text;
-            if (!_localizedText.TryGetValue(key, out text))
+            _localizedText.TryGetValue(key, out text);
+            if (text == null)
             {
-                throw new KeyNotFoundException("not found key: " + key);
+                throw new KeyNotFoundException($"Key Not Fount : {key}");
             }
             return text;
         }
@@ -26,9 +36,8 @@ namespace Icarus.Core
             {
                 value = string.Format(_localizedText[key], args);
             }
-            catch (Exception e)
+            catch (FormatException)
             {
-                UnityEngine.Debug.LogError(e);
                 string debugOutput = string.Empty;
 
                 foreach (var arg in args)
@@ -37,49 +46,44 @@ namespace Icarus.Core
                 }
 
                 var substring = debugOutput.Substring(0, debugOutput.Length - 1);
-                UnityEngine.Debug.LogError("LocalizeText の引数と GetText の引数の数が一致していないです。引数の数を一致させてください。");
-                UnityEngine.Debug.LogError(_localizedText[key]);
-                UnityEngine.Debug.LogError(substring);
-                throw;
+                throw new FormatException($"Body の可変長引数に対して、param の可変長引数が足りない Key : {key} , Body : {_localizedText[key]} , params : {substring}");
             }
 
             return value;
         }
 
-        /// <summary>
-        /// Initialize
-        /// If TargetRawText is string.Empty, Load Text in Resource/LocalizeText
-        /// </summary>
-        public static void Initialize(string language = "ja", string targetRawText = "")
-        {
-            string rawText = "";
-
-            rawText = targetRawText == "" ? FileLoader.LoadDefaultFile().text : targetRawText;
-
-            _localizedText = GetLocalizedText(language, rawText);
-        }
-
-        private static ReadOnlyDictionary<string, string> GetLocalizedText(string language, string text)
+        private static ReadOnlyDictionary<string, string> GetLocalizedText(string defaultLanguage, string targetLanguage, string text)
         {
             var dic = new Dictionary<string, string>();
             var keyValueLine = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
-            int languageIndex = 0;
+            int defaultLanguageIndex = 0;
+            int targetLanguageIndex = 0;
 
             for (int i = 0; i < langAttribute.Length; i++)
             {
-                if (language == langAttribute[i])
+                if (defaultLanguage == langAttribute[i])
                 {
-                    languageIndex = i;
+                    defaultLanguageIndex = i;
+                }
+
+                if (targetLanguage == langAttribute[i])
+                {
+                    targetLanguageIndex = i;
                 }
             }
 
-            if (languageIndex == 0)
+            if (defaultLanguageIndex == 0)
             {
-                throw new Exception($"Language \"{language}\" not Exists");
+                throw new Exception($"Language \"{defaultLanguage}\" not Exists");
             }
 
-            for (int rawTextLine = 1; rawTextLine < keyValueLine.Length - 1; rawTextLine++)
+            if (targetLanguageIndex == 0)
+            {
+                throw new Exception($"Language \"{targetLanguage}\" not Exists");
+            }
+
+            for (int rawTextLine = 1; rawTextLine < keyValueLine.Length; rawTextLine++)
             {
                 // "//" : Comment out
                 if (keyValueLine[rawTextLine].Contains("//"))
@@ -87,16 +91,14 @@ namespace Icarus.Core
                     continue;
                 }
 
-                var keyValue = keyValueLine[rawTextLine].Split(',');
-
                 // keyValue.Length が 1 以下だと、正しく設定されていないもしくは空白行部分なので避ける
-                if (keyValue.Length <= 1)
+                if (keyValueLine[rawTextLine].Split(',').Length <= 1)
                 {
                     continue;
                 }
 
-                var content = keyValue[languageIndex].Replace("\\n", Environment.NewLine);
-                dic.Add(keyValue[0], content);
+                var lineModel = new LineModel(defaultLanguageIndex, targetLanguageIndex, keyValueLine[rawTextLine].Split(','));
+                dic.Add(lineModel.Key, lineModel.Value);
             }
 
             return new ReadOnlyDictionary<string, string>(dic);
