@@ -84,7 +84,7 @@ namespace Icarus.Editor
 
         public static LocalizedTextLineModel[] CreateLocalizedTextModel(string text)
         {
-            var lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = text.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
 
             var lineModels = new LocalizedTextLineModel[lines.Length];
             for (int i = 0; i < lineModels.Length; i++)
