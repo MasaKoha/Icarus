@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -86,7 +86,7 @@ namespace Icarus.Core
             for (int rawTextLine = 1; rawTextLine < keyValueLine.Length; rawTextLine++)
             {
                 // "//" : Comment out
-                if (keyValueLine[rawTextLine].Contains("//"))
+                if (keyValueLine[rawTextLine].StartsWith("//"))
                 {
                     continue;
                 }
