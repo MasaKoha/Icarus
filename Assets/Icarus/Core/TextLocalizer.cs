@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -24,7 +24,7 @@ namespace Icarus.Core
             _localizedText.TryGetValue(key, out text);
             if (text == null)
             {
-                throw new KeyNotFoundException($"Key Not Fount : {key}");
+                throw new KeyNotFoundException($"Key Not Found : {key}");
             }
             return text;
         }
