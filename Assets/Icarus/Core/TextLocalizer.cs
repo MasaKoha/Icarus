@@ -24,7 +24,7 @@ namespace Icarus.Core
             _localizedText.TryGetValue(key, out text);
             if (text == null)
             {
-                throw new KeyNotFoundException($"Key Not Fount : {key}");
+                throw new KeyNotFoundException($"Key Not Found : {key}");
             }
             return text;
         }
@@ -86,7 +86,7 @@ namespace Icarus.Core
             for (int rawTextLine = 1; rawTextLine < keyValueLine.Length; rawTextLine++)
             {
                 // "//" : Comment out
-                if (keyValueLine[rawTextLine].Contains("//"))
+                if (keyValueLine[rawTextLine].StartsWith("//"))
                 {
                     continue;
                 }
