@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Icarus.Core
@@ -6,7 +6,7 @@ namespace Icarus.Core
     [RequireComponent(typeof(Text))]
     public class UGUITextLocalize : MonoBehaviour
     {
-        [SerializeField] private LocalizationEnum _key;
+        [SerializeField] private string _key;
 
         private void Start()
         {
