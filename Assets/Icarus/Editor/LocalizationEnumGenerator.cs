@@ -45,9 +45,9 @@ namespace Icarus.Editor
             var generatedLocalizerScriptPath2 = TargetDefaultOutputFilePath(DefaultTextLocalizerFileName);
             GenerateEnumFile(localizerCode, generatedLocalizerScriptPath2);
 
-            var uguiTextLocalize = ScriptGenerator.GenerateUGUITextLocalize(DefaultEnumName);
-            var generatedUguiTextLocalize = TargetDefaultOutputFilePath(UGUITextLocalizeFileName);
-            GenerateEnumFile(uguiTextLocalize, generatedUguiTextLocalize);
+            // var uguiTextLocalize = ScriptGenerator.GenerateUGUITextLocalize(DefaultEnumName);
+            // var generatedUguiTextLocalize = TargetDefaultOutputFilePath(UGUITextLocalizeFileName);
+            // GenerateEnumFile(uguiTextLocalize, generatedUguiTextLocalize);
 
             AssetDatabase.Refresh();
         }
