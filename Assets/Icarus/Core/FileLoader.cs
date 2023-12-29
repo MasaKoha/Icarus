@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.IO;
-using System;
 
 namespace Icarus.Core
 {
@@ -12,11 +11,8 @@ namespace Icarus.Core
 
         public static string LoadFile(string filePath)
         {
-            var text = "";
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                text = sr.ReadToEnd();
-            }
+            using var sr = new StreamReader(filePath);
+            var text = sr.ReadToEnd();
             return text;
         }
     }

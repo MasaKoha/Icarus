@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Icarus.Core
 {
@@ -10,11 +8,11 @@ namespace Icarus.Core
         public readonly string Key;
         public readonly string Value;
 
-        public LineModel(int defaultLanguageIndex, int targetLanguageIndex, string[] values)
+        public LineModel(int defaultLanguageIndex, int targetLanguageIndex, IReadOnlyList<string> values)
         {
             Key = values[0];
             var index = targetLanguageIndex;
-            if (values.Length <= targetLanguageIndex)
+            if (values.Count <= targetLanguageIndex)
             {
                 index = defaultLanguageIndex;
             }

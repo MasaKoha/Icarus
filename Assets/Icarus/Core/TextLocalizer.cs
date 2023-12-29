@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Icarus.Core
 {
-    public static partial class TextLocalizer
+    public static class TextLocalizer
     {
         private static ReadOnlyDictionary<string, string> _localizedText;
 
@@ -20,25 +20,25 @@ namespace Icarus.Core
 
         public static string GetText(string key)
         {
-            string text;
-            _localizedText.TryGetValue(key, out text);
+            _localizedText.TryGetValue(key, out var text);
             if (text == null)
             {
                 throw new KeyNotFoundException($"Key Not Found : {key}");
             }
+
             return text;
         }
 
         public static string GetText(string key, params object[] args)
         {
-            string value = string.Empty;
+            string value;
             try
             {
                 value = string.Format(_localizedText[key], args);
             }
             catch (FormatException)
             {
-                string debugOutput = string.Empty;
+                var debugOutput = string.Empty;
 
                 foreach (var arg in args)
                 {
@@ -57,10 +57,10 @@ namespace Icarus.Core
             var dic = new Dictionary<string, string>();
             var keyValueLine = text.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
             var langAttribute = keyValueLine[0].Split(',');
-            int defaultLanguageIndex = 0;
-            int targetLanguageIndex = 0;
+            var defaultLanguageIndex = 0;
+            var targetLanguageIndex = 0;
 
-            for (int i = 0; i < langAttribute.Length; i++)
+            for (var i = 0; i < langAttribute.Length; i++)
             {
                 if (defaultLanguage == langAttribute[i])
                 {
@@ -83,7 +83,7 @@ namespace Icarus.Core
                 throw new Exception($"Language \"{targetLanguage}\" not Exists");
             }
 
-            for (int rawTextLine = 1; rawTextLine < keyValueLine.Length; rawTextLine++)
+            for (var rawTextLine = 1; rawTextLine < keyValueLine.Length; rawTextLine++)
             {
                 // "//" : Comment out
                 if (keyValueLine[rawTextLine].StartsWith("//"))
