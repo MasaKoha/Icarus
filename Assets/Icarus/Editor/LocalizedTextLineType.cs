@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Icarus.Editor
+﻿namespace Icarus.Editor
 {
     public enum LocalizedTextLineType
     {

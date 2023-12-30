@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Icarus.Core
 {
-    public static class TextLocalizer
+    public static partial class TextLocalizer
     {
         private static ReadOnlyDictionary<string, string> _localizedText;
 
