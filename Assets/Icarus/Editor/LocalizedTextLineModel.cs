@@ -1,7 +1,4 @@
 ﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Icarus.Editor
 {
@@ -23,7 +20,7 @@ namespace Icarus.Editor
             LineText = lineBody;
             Type = GetLocalizeTextLineType(LineText);
             Key = "";
-            LocalizedTexts = new string[] { "" };
+            LocalizedTexts = new[] { "" };
 
             if (Type == LocalizedTextLineType.KeyValue)
             {

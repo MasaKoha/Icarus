@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Icarus.Core;
 using UnityEditor;
 using UnityEngine;
@@ -12,12 +11,11 @@ namespace Icarus.Editor
     public static class LocalizationEnumGenerator
     {
         private const string DefaultEnumName = "LocalizationEnum";
-
         private const string DefaultTextLocalizerFileName = "TextLocalizer.Enum";
+        private const string UGUITextLocalizeFileName = "IcarusUGUITextLocalize";
+        private const string TextMeshProUGUITextLocalizeFileName = "IcarusTextMeshProUGUITextLocalize";
 
-        private const string UGUITextLocalizeFileName = "UGUITextLocalize";
-
-        [MenuItem("Window/Icarus/LocalizationEnumGenerate")]
+        [MenuItem("Tools/Icarus/LocalizationEnumGenerate")]
         public static void Generate()
         {
             var text = FileLoader.LoadDefaultFile().text;
@@ -26,11 +24,12 @@ namespace Icarus.Editor
 
             if (duplicatedKeys.Count >= 1)
             {
-                string failedKeys = "{";
+                var failedKeys = "{";
                 foreach (var key in duplicatedKeys)
                 {
                     failedKeys = failedKeys + key + ",";
                 }
+
                 failedKeys += "}";
                 throw new Exception($"Duplicated Key {failedKeys}");
             }
@@ -45,9 +44,13 @@ namespace Icarus.Editor
             var generatedLocalizerScriptPath2 = TargetDefaultOutputFilePath(DefaultTextLocalizerFileName);
             GenerateEnumFile(localizerCode, generatedLocalizerScriptPath2);
 
-            // var uguiTextLocalize = ScriptGenerator.GenerateUGUITextLocalize(DefaultEnumName);
-            // var generatedUguiTextLocalize = TargetDefaultOutputFilePath(UGUITextLocalizeFileName);
-            // GenerateEnumFile(uguiTextLocalize, generatedUguiTextLocalize);
+            var uguiTextLocalize = ScriptGenerator.GenerateUGUITextLocalize();
+            var generatedUguiTextLocalize = TargetDefaultOutputFilePath(UGUITextLocalizeFileName);
+            GenerateEnumFile(uguiTextLocalize, generatedUguiTextLocalize);
+
+            var textMeshProUGUITextLocalize = ScriptGenerator.GenerateTextMeshProUGUITextLocalize();
+            var generatedTextMeshProUGUITextLocalize = TargetDefaultOutputFilePath(TextMeshProUGUITextLocalizeFileName);
+            GenerateEnumFile(textMeshProUGUITextLocalize, generatedTextMeshProUGUITextLocalize);
 
             AssetDatabase.Refresh();
         }
@@ -59,11 +62,12 @@ namespace Icarus.Editor
 
             if (duplicatedKeys.Count >= 1)
             {
-                string failedKeys = "{";
+                var failedKeys = "{";
                 foreach (var key in duplicatedKeys)
                 {
                     failedKeys = failedKeys + key + ",";
                 }
+
                 failedKeys += "}";
                 throw new Exception($"Duplicated Key {failedKeys}");
             }
@@ -82,12 +86,12 @@ namespace Icarus.Editor
                 .Select(groupedKey => groupedKey.Key).ToList();
         }
 
-        public static LocalizedTextLineModel[] CreateLocalizedTextModel(string text)
+        private static LocalizedTextLineModel[] CreateLocalizedTextModel(string text)
         {
             var lines = text.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.None);
 
             var lineModels = new LocalizedTextLineModel[lines.Length];
-            for (int i = 0; i < lineModels.Length; i++)
+            for (var i = 0; i < lineModels.Length; i++)
             {
                 lineModels[i] = new LocalizedTextLineModel(i, lines[i]);
             }
@@ -109,27 +113,29 @@ namespace Icarus.Editor
         private static string TargetDefaultOutputFilePath(string fileName)
         {
             // Icarusが置いてあるフォルダのGeneratedに生成する
-            var targetFolderName = System.IO.Path.DirectorySeparatorChar + "Icarus";
+            var targetFolderName = Path.DirectorySeparatorChar + "Icarus";
             var icarusPath = GetTargetFolderPath(targetFolderName, "Assets");
 
             var generatedPath = "";
-            if (!string.IsNullOrEmpty(icarusPath))
+            if (string.IsNullOrEmpty(icarusPath))
             {
-                var generateTargetDir = Path.Combine(icarusPath, "Generated");
-                if (!Directory.Exists(generateTargetDir))
-                {
-                    Directory.CreateDirectory(generateTargetDir);
-                }
-
-                generatedPath = Path.Combine(generateTargetDir, $"{fileName}.cs");
+                return generatedPath;
             }
+
+            var generateTargetDir = Path.Combine(icarusPath, "Generated");
+            if (!Directory.Exists(generateTargetDir))
+            {
+                Directory.CreateDirectory(generateTargetDir);
+            }
+
+            generatedPath = Path.Combine(generateTargetDir, $"{fileName}.cs");
+
             return generatedPath;
         }
 
         private static string GetTargetFolderPath(string targetFolderName, string findStartPath)
         {
             var childDirectoryPaths = Directory.GetDirectories(findStartPath);
-
             return Recursive(targetFolderName, childDirectoryPaths);
         }
 

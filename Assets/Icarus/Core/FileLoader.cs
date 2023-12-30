@@ -5,7 +5,7 @@ namespace Icarus.Core
 {
     public static class FileLoader
     {
-        private const string TextPath = "LocalizedText";
+        private const string TextPath = "IcarusLocalizedText";
 
         public static TextAsset LoadDefaultFile() => Resources.Load<TextAsset>(TextPath);
 
