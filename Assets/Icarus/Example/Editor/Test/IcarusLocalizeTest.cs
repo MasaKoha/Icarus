@@ -134,18 +134,21 @@ namespace Icarus.Editor.Test
             // 指定先に保存したコードが一致しているかどうか Assert
             string expect =
             @"// Auto Generated File
-// Menu : Tools -> LocalizationEnumGenerate
+// Menu : Tools -> Icarus -> LocalizationEnumGenerate
+
 namespace Icarus.Core
 {
     public enum LocalizationEnum
     {
-        // カテゴリー梅
+        #region  カテゴリー梅
         /// <summary>
         /// ja : ありがとう
         /// en : Thx
         /// </summary>
         CommonThanks,
-        // カテゴリー竹
+        #endregion
+
+        #region  カテゴリー竹
         /// <summary>
         /// ja : 削\n除
         /// en : Del
@@ -156,6 +159,7 @@ namespace Icarus.Core
         /// en : Pos {0}
         /// </summary>
         Position,
+        #endregion
     }
 }
 ";
