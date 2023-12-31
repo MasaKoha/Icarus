@@ -1,5 +1,6 @@
 # Icarus
-LocalizeSystem in Unity (MIT Lisence)
+Text Management & Localize System in Unity (MIT Lisence)
+テキスト管理 & ローカライズシステム
 
 ## How To Use
 1. Open Icarus.unitypackage
