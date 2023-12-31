@@ -17,13 +17,13 @@ namespace Icarus.Editor
             builder.AppendLine("    {");
             builder.AppendLine($"        public static string GetText({enumScriptName} enumKey)");
             builder.AppendLine("        {");
-            builder.AppendLine("            var key = nameof(enumKey);");
+            builder.AppendLine("            var key = enumKey.ToString();");
             builder.AppendLine("            return GetText(key);");
             builder.AppendLine("        }");
             builder.AppendLine("");
             builder.AppendLine($"        public static string GetText({enumScriptName} enumKey, params object[] args)");
             builder.AppendLine("        {");
-            builder.AppendLine("            var key = nameof(enumKey);");
+            builder.AppendLine("            var key = enumKey.ToString();");
             builder.AppendLine("            return GetText(key, args);");
             builder.AppendLine("        }");
             builder.AppendLine("    }");

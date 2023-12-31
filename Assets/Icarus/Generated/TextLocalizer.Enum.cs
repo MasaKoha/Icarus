@@ -7,13 +7,13 @@ namespace Icarus.Core
     {
         public static string GetText(LocalizationEnum enumKey)
         {
-            var key = nameof(enumKey);
+            var key = enumKey.ToString();
             return GetText(key);
         }
 
         public static string GetText(LocalizationEnum enumKey, params object[] args)
         {
-            var key = nameof(enumKey);
+            var key = enumKey.ToString();
             return GetText(key, args);
         }
     }
