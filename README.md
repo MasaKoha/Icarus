@@ -91,3 +91,6 @@ private void GetTextExample()
 - Attach Script(IcarusTextMeshProUGUITextLocalize.cs or IcarusUGUITextLocalize.cs) to Text or TextMeshProUGUI Attached GameObject.
 
 - if Attach IcarusTextMeshProUGUITextLocalize.cs or IcarusUGUITextLocalize.cs, support input string only.
+
+![AttachComponent](https://github.com/MasaKoha/Icarus/assets/5647635/853b012e-1e04-4f13-aced-7e41c5057a90)
+
