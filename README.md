@@ -9,15 +9,18 @@ Text Management & Localize System in Unity (MIT Lisence)
 
 ### Covert csv To enum
 - Convert Assets/Icarus/Resources/IcarusLocalizedText.csv to Assets/Irarus/Generated/LocalizationEnum.cs
-
+- In csv File Support "##" & "//"
+    - "## abc" add #region abc and #endregion in exported Enum.cs.
+    - "// abc" don't Export Enum.cs.
 #### Example Generated Enum
 - IcarusLocalizedText.csv
 ```csv
 key,ja,en
+// ....
 Key1Test,テスト,Test
-// ----- Comment "//"
+## Category1
 KeyTest,テスト,Test
-// ----- Comment2 ---------
+## Category2
 KeyTest2,テスト2,Test2
 ```
 
@@ -27,25 +30,22 @@ convert csv -> Enum.cs
 ```cs
 public enum LocalizationEnum
 {
-    /// <summary>
-    /// ja : テスト
-    /// en : Test
-    /// </summary>
+    // ja : テスト
+    // en : Test
     Key1Test,
-    #region  ----- Comment "//"
-    /// <summary>
-    /// ja : テスト
-    /// en : Test
-    /// </summary>
+
+    #region  Category1
+    // ja : テスト
+    // en : Test    
     KeyTest,
+
     #endregion
 
-    #region  ----- Comment2 ---------
-    /// <summary>
-    /// ja : テスト2
-    /// en : Test2
-    /// </summary>
+    #region  Category2
+    // ja : テスト2
+    // en : Test2
     KeyTest2,
+
     #endregion
 }
 ```
