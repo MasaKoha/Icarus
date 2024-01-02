@@ -5,6 +5,7 @@
         None,
         Header,
         Comment,
+        Category,
         KeyValue,
         Other,
     }

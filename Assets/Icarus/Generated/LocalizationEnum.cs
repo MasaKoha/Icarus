@@ -5,25 +5,22 @@ namespace Icarus.Core
 {
     public enum LocalizationEnum
     {
-        /// <summary>
-        /// ja : テスト
-        /// en : Test
-        /// </summary>
+        // ja : テスト
+        // en : Test
         Key1Test,
-        #region  ----- Comment "//"
-        /// <summary>
-        /// ja : テスト
-        /// en : Test
-        /// </summary>
+
+        #region  Category1
+        // ja : テスト
+        // en : Test
         KeyTest,
+
         #endregion
 
-        #region  ----- Comment2 ---------
-        /// <summary>
-        /// ja : テスト2
-        /// en : Test2
-        /// </summary>
+        #region  Category2
+        // ja : テスト2
+        // en : Test2
         KeyTest2,
+
         #endregion
     }
 }

@@ -1,6 +1,9 @@
 key,ja,en
+// Don't delete over line.  Please write {key},{Language1},{Language2}.
+// if use "//", not convert enum file.
 Key1Test,テスト,Test
-// ----- Comment "//"
+## Category1
+// if use "##", output enum #region {CategoryName} and #endregion
 KeyTest,テスト,Test
-// ----- Comment2 ---------
+## Category2
 KeyTest2,テスト2,Test2

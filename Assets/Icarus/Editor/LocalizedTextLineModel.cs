@@ -37,6 +37,11 @@ namespace Icarus.Editor
                 return LocalizedTextLineType.Comment;
             }
 
+            if (line.StartsWith("##"))
+            {
+                return LocalizedTextLineType.Category;
+            }
+
             if (line.StartsWith("key,"))
             {
                 return LocalizedTextLineType.Header;

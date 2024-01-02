@@ -42,38 +42,51 @@ namespace Icarus.Editor
             builder.AppendLine("{");
             builder.AppendLine($"    public enum {enumName}");
             builder.AppendLine("    {");
+            var existComment = false;
 
             foreach (var line in liveModels)
             {
                 if (line.Type == LocalizedTextLineType.KeyValue)
                 {
-                    builder.AppendLine("        /// <summary>");
                     for (var j = 0; j < line.LocalizedTexts.Length; j++)
                     {
-                        builder.AppendLine($"        /// {header.Languages[j]} : {line.LocalizedTexts[j]}");
+                        builder.AppendLine($"        // {header.Languages[j]} : {line.LocalizedTexts[j]}");
                     }
 
-                    builder.AppendLine("        /// </summary>");
                     builder.AppendLine($"        {line.Key},");
+                    builder.AppendLine("");
                     continue;
                 }
 
-                if (line.Type != LocalizedTextLineType.Comment)
+                if (line.Type == LocalizedTextLineType.Comment)
                 {
                     continue;
                 }
 
-                if (commentCount != 0)
+                if (line.Type == LocalizedTextLineType.Category)
                 {
-                    builder.AppendLine($"        #endregion{Environment.NewLine}");
+                    if (commentCount != 0)
+                    {
+                        if (existComment)
+                        {
+                            builder.AppendLine($"        #endregion{Environment.NewLine}");
+                        }
+                    }
+
+                    // Remove "//" in Comment
+                    builder.AppendLine($"        #region {line.LineText.Remove(0, 2)}");
+                    existComment = true;
+                    continue;
                 }
 
-                // Remove "//" in Comment
-                builder.AppendLine($"        #region {line.LineText.Remove(0, 2)}");
                 commentCount++;
             }
 
-            builder.AppendLine("        #endregion");
+            if (existComment)
+            {
+                builder.AppendLine("        #endregion");
+            }
+
             builder.AppendLine("    }");
             builder.AppendLine("}");
             return builder.ToString();
