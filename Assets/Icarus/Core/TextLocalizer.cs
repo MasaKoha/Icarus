@@ -97,7 +97,7 @@ namespace Icarus.Core
                     continue;
                 }
 
-                var lineModel = new LineModel(defaultLanguageIndex, targetLanguageIndex, keyValueLine[rawTextLine].Split(','));
+                var lineModel = new LineModel(defaultLanguageIndex, targetLanguageIndex, CsvParser.Parse(keyValueLine[rawTextLine]));
                 dic.Add(lineModel.Key, lineModel.Value);
             }
 
